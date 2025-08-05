@@ -15,7 +15,7 @@ class Asteroid(RoomObject):
         
         # set image
         image = self.load_image("asteroid.png")
-        self.set_image(image,50,49)
+        self.set_image(image,100, 98)
         
         # set travel direction
         angle = random.randint(135,225)
@@ -58,8 +58,10 @@ class Asteroid(RoomObject):
         if other_type == "Ship":
             self.room.delete_object(self)
             Globals.LIVES -= 1
+            self.room.asteroid_collision.play()
             if Globals.LIVES > 0:
                 self.room.lives.update_image()
             else:
                 self.room.running = False
-                Globals.LIVES = 3
+                Globals.LIVES = 5
+                Globals.SCORE = 0

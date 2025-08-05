@@ -10,7 +10,7 @@ class Globals:
     SCORE = 0
 
     # - Set the starting number of lives - #
-    LIVES = 3
+    LIVES = 5
 
     # - Set the Window display name - #
     window_name = 'GF Game'
@@ -38,3 +38,6 @@ class Globals:
 
     total_count = 0
     destroyed_count = 0
+
+    zork_lives = 10
+

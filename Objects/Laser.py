@@ -20,6 +20,7 @@ class Laser(RoomObject):
         self.set_direction(0, 20)
         self.register_collision_object("Astronaut")
         self.register_collision_object("Asteroid")
+        self.register_collision_object("Zork")
     def step(self):
         """
         Determine what happens to the laser on each tick of the game clock
@@ -35,9 +36,26 @@ class Laser(RoomObject):
     
     def handle_collision(self, other, other_type):
         if other_type == "Asteroid":
+            self.room.asteroid_shot.play()
             self.room.delete_object(other)
             self.room.score.update_score(5)
         elif other_type == "Astronaut":
+            self.room.astronaut_shot.play()
             self.room.delete_object(other)
             self.room.score.update_score(-10)
+            Globals.LIVES -= 1
+            if Globals.LIVES <= 0:
+                self.room.running = False
+                Globals.LIVES = 5
+                Globals.SCORE = 0
+                self.room.lives.update_image()
+            else:
+                self.room.lives.update_image()
+        elif other_type == "Zork":
+            self.room.asteroid_shot.play()
+            print("Zork hit by laser")
+            Globals.zork_lives -= 1
+            other.check_lives()
+            
+        self.room.delete_object(self)
     

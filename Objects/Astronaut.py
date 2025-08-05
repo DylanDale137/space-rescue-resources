@@ -1,4 +1,4 @@
-from GameFrame import RoomObject
+from GameFrame import RoomObject,Globals
 
 class Astronaut(RoomObject):
     """
@@ -37,6 +37,7 @@ class Astronaut(RoomObject):
         if other_type == "Ship":
             self.room.delete_object(self)
             self.room.score.update_score(50)
+            self.room.astronaut_saved.play()
             
     def outside_of_room(self):
         """
@@ -44,3 +45,12 @@ class Astronaut(RoomObject):
         """
         if self.x + self.width < 0:
             self.room.delete_object(self)
+            self.room.score.update_score(-20)
+            Globals.LIVES -= 1
+            if Globals.LIVES <= 0:
+                self.room.running = False
+                Globals.LIVES = 5
+                Globals.SCORE = 0
+            else:
+                self.room.lives.update_image()
+            

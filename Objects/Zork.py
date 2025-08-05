@@ -6,7 +6,7 @@ class Zork(RoomObject):
 
     def __init__(self, room, x, y):
         RoomObject.__init__(self, room, x, y)
-
+        
         image = self.load_image("Zork.png")
         self.set_image(image, 135, 165)
 
@@ -17,6 +17,9 @@ class Zork(RoomObject):
 
         asteroid_spawn_time = random.randint(15,150)
         self.set_timer(asteroid_spawn_time, self.spawn_asteroid)
+
+        print(Globals.zork_lives)
+
     def keep_in_room(self):
         if self.y < 0 or self.y > Globals.SCREEN_HEIGHT - self.height:
             self.y_speed *= -1
@@ -33,7 +36,7 @@ class Zork(RoomObject):
         self.room.add_room_object(new_asteroid)
         
         # reset time for next Asteroid spawn
-        asteroid_spawn_time = random.randint(15, 60)
+        asteroid_spawn_time = random.randint(15, 40)
         self.set_timer(asteroid_spawn_time, self.spawn_asteroid)
 
     def spawn_astronaut(self):
@@ -42,3 +45,10 @@ class Zork(RoomObject):
 
         astronaut_spawn_time = random.randint(30, 200)
         self.set_timer(astronaut_spawn_time, self.spawn_astronaut)
+    
+    def check_lives(self):
+        if Globals.zork_lives <= 0:
+            self.room.delete_object(self)
+            Globals.zork_lives = 10
+            Globals.SCORE += 100
+            self.room.score.update_score(100)

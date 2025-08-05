@@ -23,8 +23,11 @@ class Score(TextObject):
         Updates the score and redraws the text
         """
         Globals.SCORE += change
-        self.text = str(Globals.SCORE)
-        self.update_text()
+        if Globals.SCORE < 0:
+            Globals.SCORE = 0
+        else:
+            self.text = str(Globals.SCORE)
+            self.update_text()
         
 
 class Lives(RoomObject):
